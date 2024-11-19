@@ -6,6 +6,8 @@
 
 body {
     font-family: Arial, sans-serif; /* Added for better text rendering */
+    background-color: #3A28A0;
+    color: white;
 }
 
 .navigation-section {
@@ -40,10 +42,11 @@ body {
     gap: 20px;
     padding: 20px;
     justify-content: center;
+    
 }
 
 .game-item {
-    background-color: var(--secondary-color);
+    background-color: #1C140F;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;

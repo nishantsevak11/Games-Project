@@ -9,10 +9,13 @@
 </head>
 
 <body>
-    <h1 id="title">Call of Duty</h1>
+    <header>
+        <h1 id="title">Call of Duty</h1>
+    </header>
+
     <section class="top">
         <div class="left">
-            <img id="image" src="" alt="">
+            <img id="image" src="" alt="Game image">
         </div>
         <div class="right">
             <h2 id="short_desc"></h2>
@@ -31,16 +34,18 @@
         <div class="system-requirements" id="system-requirements">
             <h2>Minimum System Requirements</h2>
             <ul id="requirements-list">
-                <!-- The requirements will be dynamically inserted here by JavaScript -->
+                <!-- System requirements will be dynamically inserted here by JavaScript -->
             </ul>
         </div>
 
         <div class="screenshots">
-            <button id="prevBtn"><</button>
+            <button id="prevBtn" onclick="changeScreenshot(-1)">&#60;</button>
+            
             <div class="ss-image">
-                <img id="" src="" alt="">
+                <img id="currentScreenshot" src="" alt="Screenshot of the game">
             </div>
-            <button id="nextBtn">></button>
+            
+            <button id="nextBtn" onclick="changeScreenshot(1)">&#62;</button>
         </div>
     </section>
 

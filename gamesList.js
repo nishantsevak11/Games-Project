@@ -1,100 +1,120 @@
-const baseUrl = 'http://localhost:3000/api/games';
-const gameDetailUrl = 'http://localhost:3000/api/game?id=';
-
 let currentPage = 1; // Track current page for loading more games
 let isLoading = false; // Prevent multiple simultaneous loads
 
 // Retrieve the game type from localStorage (e.g., platform or category)
-const whichGame = localStorage.getItem('game') || 'all'; // Default to 'all' if not set
-localStorage.removeItem('game');
+const whichGame = localStorage.getItem('game'); // Default to 'all' if not set
 
 // List of known platforms to differentiate between platform and category
-const knownPlatforms = ['pc', 'browser', 'all'];
-
-// Function to navigate to the game detail page
-function navigatePage(id) {
-    localStorage.setItem('id', id);
-    window.location.href = "gamePage.html";
+if (whichGame == 'pc' || whichGame == 'browser') {
+    fetch1(whichGame);
+}else {
+    fetch2(whichGame);
 }
 
-// Function to fetch games with optional sorting, platform, category, and pagination
-async function fetchGames(sortBy = '', type = 'all', page = 1) {
-    // Determine if 'type' is a platform or category
-    const isPlatform = knownPlatforms.includes(type);
-    const url = `${baseUrl}?${isPlatform ? 'platform' : 'category'}=${type}&page=${page}${sortBy ? `&sort-by=${sortBy}` : ''}`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
-        }
-        const data = await response.json();
-        return Array.isArray(data) ? data : []; // Ensure it returns an array
-    } catch (error) {
-        console.error('Error loading games:', error);
-        return []; // Return an empty array in case of error
-    }
-}
-
-// Function to load and display games
-async function loadAndDisplayGames(sortBy = '', type = 'all') {
-    const games = await fetchGames(sortBy, type, currentPage);
-    if (games.length) {
-        games.forEach(displayGameElement); 
+// Event listener for sorting dropdown
+document.getElementById('sort-options').addEventListener('change', (event) => {
+    const sortOption = event.target.value;
+    if (whichGame == 'pc' || whichGame == 'browser') {
+        fetch1(whichGame, sortOption);
     } else {
-        console.warn('No games available for the given criteria.');
+        fetch2(whichGame, sortOption);
     }
-}
-
-// Function to display individual game elements
-function displayGameElement(gameData) {
-    const gameElement = document.createElement("div");
-    gameElement.className = "game-item";
-    gameElement.id = gameData.id;
-
-    const title = document.createElement("h3");
-    title.innerText = gameData.title;
-
-    const image = document.createElement("img");
-    image.src = gameData.thumbnail;
-    image.alt = gameData.title;
-
-    const description = document.createElement("p");
-    description.innerText = gameData.short_description;
-
-    gameElement.append(image, title, description);
-    document.querySelector(".pc-games-container").append(gameElement);
-
-    gameElement.addEventListener("click", () => navigatePage(gameData.id));
-}
-
-// Add event listener to the sorting dropdown
-document.getElementById('sort-options').addEventListener('change', async (event) => {
-    const selectedSort = event.target.value;
-    currentPage = 1; // Reset to the first page
-    document.querySelector(".pc-games-container").innerHTML = ''; // Clear the current display of games
-    await loadAndDisplayGames(selectedSort, whichGame); // Fetch and display sorted games
 });
 
-// Function to handle scrolling to load more games
-async function handleScroll() {
-    const scrollPosition = window.innerHeight + window.scrollY;
-    const threshold = document.body.offsetHeight - 100;
+async function fetch1(platform, sortOption = '') {
+    let url = `https://free-to-play-games-database.p.rapidapi.com/api/games?platform=${platform}`;
+    if (sortOption) {
+        url += `&sort-by=${sortOption}`;
+    }
 
-    if (scrollPosition >= threshold && !isLoading) {
-        isLoading = true;
-        currentPage++;
-        await loadAndDisplayGames('', whichGame); // Load more games
-        isLoading = false;
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': 'eee25a8a6bmsh34ce2fa70663715p1dcd64jsn9aebe6edf685',
+            'x-rapidapi-host': 'free-to-play-games-database.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        display(result); // Pass the fetched data to the display function
+    } catch (error) {
+        console.error(error);
     }
 }
 
-// Initial load of games using the value from localStorage
-libraryLoad();
-window.addEventListener('scroll', handleScroll);
+async function fetch2(cat, sortOption = '') {
+    let url = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${cat}`;
+    if (sortOption) {
+        url += `&sort-by=${sortOption}`;
+    }
 
-async function libraryLoad() {
-    await loadAndDisplayGames('', whichGame); // Load games on page load
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': 'eee25a8a6bmsh34ce2fa70663715p1dcd64jsn9aebe6edf685',
+            'x-rapidapi-host': 'free-to-play-games-database.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        display(result); // Pass the fetched data to the display function
+    } catch (error) {
+        console.error(error);
+    }
 }
+
+// Function to display the fetched game data
+// Function to display the fetched game data
+function display(data) {
+    const gameContainer = document.querySelector('.pc-games-container'); // Get the container where the games will be displayed
+
+    // Loop through each game and create HTML elements
+    data.forEach(game => {
+        // Create the game card structure
+        const gameCard = document.createElement('div');
+        gameCard.classList.add('game-item');
+        gameCard.setAttribute('data-id', game.id); // Store the game ID in a data attribute for easy access
+
+        // Create the game image
+        const gameImage = document.createElement('img');
+        gameImage.src = game.thumbnail; // Assuming the API provides the image URL under "thumbnail"
+        gameImage.alt = game.title; // Set the alt text for accessibility
+
+        // Create the game title
+        const gameTitle = document.createElement('h3');
+        gameTitle.textContent = game.title;
+
+        // Create the game description
+        const gameDescription = document.createElement('p');
+        gameDescription.textContent = game.short_description;
+
+        // Append the image, title, and description to the game card
+        gameCard.appendChild(gameImage);
+        gameCard.appendChild(gameTitle);
+        gameCard.appendChild(gameDescription);
+
+        // Add click event listener to the game card to navigate to the game page
+        gameCard.addEventListener('click', function() {
+            navigatePage(game.id); // Call the function to store the ID and navigate
+        });
+
+        // Append the game card to the container
+        gameContainer.appendChild(gameCard);
+    });
+}
+
+// Function to navigate to the game page with the game ID
+function navigatePage(id) {
+    // Store the game ID in localStorage
+    localStorage.setItem('id', id);
+    // Navigate to the gamePage.html
+    window.location.href = 'gamePage.html';
+}
+
 
 // Set the heading dynamically based on the game type
 document.getElementById('heading').innerText = `Top ${whichGame} Games`;

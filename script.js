@@ -1,4 +1,12 @@
-const baseUrl = 'http://localhost:3000/api/games';
+const baseUrl = 'https://free-to-play-games-database.p.rapidapi.com/api/games';
+
+const options = {
+    method: 'GET',
+    headers: {
+        'x-rapidapi-key': 'eee25a8a6bmsh34ce2fa70663715p1dcd64jsn9aebe6edf685',
+        'x-rapidapi-host': 'free-to-play-games-database.p.rapidapi.com'
+    }
+};
 
 function navigatePage(id) {
     // Store the game ID in localStorage and navigate to the game page
@@ -7,46 +15,46 @@ function navigatePage(id) {
 }
 
 function showAll(className){
-    localStorage.setItem('game',className);
+    localStorage.setItem('game', className);
     window.location.href = "gamesList.html"
 }
 
-function libraryLoad(platform, containerId, sortBy) {
+async function libraryLoad(platform, containerId, sortBy) {
     const url = `${baseUrl}?platform=${platform}${sortBy ? '&sort-by=' + sortBy : ''}`;
-    
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const limitedData = data.slice(0, 5); // Limit to top 5 games
-            limitedData.forEach(game => {
-                displayElement(game, containerId);
-            });
-        })
-        .catch(error => console.error('Error loading the game data:', error));
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const data = await response.json();  // Change to .json() because the API returns JSON
+        const limitedData = data.slice(0, 5); // Limit to top 5 games
+        limitedData.forEach(game => {
+            displayElement(game, containerId);
+        });
+    } catch (error) {
+        console.error('Error loading the game data:', error);
+    }
 }
 
-function libraryLoad2(category, containerId) {
-    const url = `${baseUrl}?category=${category}`;
-    
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const limitedData = data.slice(0, 5); // Limit to top 5 games
-            limitedData.forEach(game => {
-                displayElement(game, containerId);
-            });
-        })
-        .catch(error => console.error('Error loading the game data:', error));
+async function libraryLoad2(category, containerId, sortBy = 'popularity') {
+    const url = `${baseUrl}?category=${category}&sort-by=${sortBy}`;
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const data = await response.json();
+        const limitedData = data.slice(0, 5);
+        limitedData.forEach(game => {
+            displayElement(game, containerId);
+        });
+    } catch (error) {
+        console.error('Error loading the game data:', error);
+    }
 }
 
 
@@ -67,10 +75,9 @@ function displayElement(data, containerId) {
 }
 
 // Load games into different containers
-libraryLoad('all', 'top-games-container', 'popularity');
-libraryLoad('pc', 'top-pc-games-container', 'popularity');
-libraryLoad('browser', 'top-browser-games-container', 'popularity');
-libraryLoad2('action', 'top-action-games');
-libraryLoad2('racing', 'top-racing-games');
-libraryLoad2('shooter', 'top-shooter-games');
-libraryLoad2('zombie', 'top-zombie-games');
+libraryLoad('pc', 'top-pc-games-container', 'popularity');  // Example with 'pc' platform
+libraryLoad('browser', 'top-browser-games-container', 'popularity'); // Example with 'browser' platform
+libraryLoad2('action', 'top-action-games'); // Example with 'action' category
+libraryLoad2('racing', 'top-racing-games'); // Example with 'racing' category
+libraryLoad2('shooter', 'top-shooter-games'); // Example with 'shooter' category
+libraryLoad2('zombie', 'top-zombie-games'); // Example with 'zombie' category

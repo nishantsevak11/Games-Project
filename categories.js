@@ -40,8 +40,24 @@ async function loadGames(category, page = 1) {
 // Fetch games based on category and page
 async function fetchGames(category, page) {
     try {
-        const response = await fetch(`${baseUrl}${encodeURIComponent(category)}&page=${page}`);
+        const response = await fetch(`${baseUrl}${encodeURIComponent(category)}`);
         if (!response.ok) throw new Error(response.statusText);
+        
+    } catch (error) {
+        
+    }
+
+    const url = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${category}&page=${page}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': 'eee25a8a6bmsh34ce2fa70663715p1dcd64jsn9aebe6edf685',
+            'x-rapidapi-host': 'free-to-play-games-database.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
         return await response.json(); // Return the data
     } catch (error) {
         console.error("Error fetching data:", error);
