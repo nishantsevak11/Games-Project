@@ -34,14 +34,14 @@ nav {
 
 .logo h1 {
     margin: 0; /* Remove default margins for proper alignment */
-    font-size: 24px; /* Adjust as needed */
+    font-size: 2rem; /* Adjust as needed */
 }
 
 .navigation-feature {
     display: flex;
     justify-content: flex-end; /* Push navigation links to the end */
     align-items: center;
-    width: 50%; /* Adjust width if needed */
+   /* Adjust width if needed */
 }
 
 .navigation-feature ul {
@@ -54,14 +54,13 @@ nav {
 .navigation-feature ul li {
     margin: 0 15px; /* Adjust spacing between links */
     cursor: pointer;
-    font-size: 18px; /* Adjust font size */
+    font-size: 1.5rem; /* Adjust font size */
 }
 
 @media (max-width: 1000px) {
    
 
     .navigation-feature {
-        width: 100%; /* Take full width */
         justify-content: center; /* Center navigation links */
     }
 
@@ -93,10 +92,12 @@ nav {
 
 .hero-text h1{
     font-size: 1.5rem;
+    margin: 1% 0 ;
 }
 
 .hero-text p{
     font-size: 0.8rem;
+    margin: 1% 0 ;
 }
 
 .hero-image{
@@ -147,10 +148,11 @@ nav {
         justify-content: center;
         align-items: center;
         width: 100%;
+        padding: 5% 0;
     }
 
     .hero-text {
-        width: 80%;
+        width: 90%;
         text-align: center;
     }
 
