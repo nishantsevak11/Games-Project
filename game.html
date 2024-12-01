@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Details</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-details">
+            <h1 id="title"></h1>
+            <img id="image" src="" alt="Game Thumbnail">
+            <p id="short_desc"></p>
+            <p id="desc"></p>
+            <p id="genre"></p>
+            <p id="platform"></p>
+            <p id="publisher"></p>
+            <p id="developer"></p>
+            <p id="release_date"></p>
+
+            <div class="screenshots-section">
+                <h2>Screenshots</h2>
+                <div class="screenshot-container">
+                    <button id="prevBtn">&lt;</button>
+                    <div class="ss-image">
+                        <img src="" alt="Game Screenshot">
+                    </div>
+                    <button id="nextBtn">&gt;</button>
+                </div>
+            </div>
+
+            <div class="requirements-section">
+                <h2>System Requirements</h2>
+                <ul id="requirements-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

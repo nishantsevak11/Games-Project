@@ -95,7 +95,6 @@ function display(data) {
         // Append the image, title, and description to the game card
         gameCard.appendChild(gameImage);
         gameCard.appendChild(gameTitle);
-        gameCard.appendChild(gameDescription);
 
         // Add click event listener to the game card to navigate to the game page
         gameCard.addEventListener('click', function() {

@@ -78,11 +78,9 @@ function displayElement(data) {
     image.src = data.thumbnail;
     image.alt = data.title;
 
-    const description = document.createElement("p");
-    description.innerText = data.short_description;
 
     // Append all elements to the game div
-    game.append(image, title, description);
+    game.append(image, title);
 
     // Append the game div to the container in the HTML
     document.querySelector(".games-container").append(game);
