@@ -60,7 +60,12 @@ h1#title {
     width: 100%;
 }
 
+
 .left {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    gap: 20px;
     background-color: var(--secondary-color);
     border-radius: 15px;
     overflow: hidden;
@@ -73,6 +78,16 @@ h1#title {
     object-fit: cover;
     aspect-ratio: 16/9;
     transition: transform 0.3s ease;
+}
+
+#playnow{
+    padding: 2% 3%;
+    border: 3px solid rgb(146, 146, 26);
+    border-radius: 15px;
+    text-decoration: none;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
 }
 
 .right {
