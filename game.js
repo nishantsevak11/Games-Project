@@ -43,6 +43,7 @@ function displayElement(gameData) {
   document.getElementById('image').src = gameData.thumbnail;
   document.getElementById('short_desc').textContent = gameData.short_description;
   document.getElementById('desc').textContent = gameData.description;
+   document.getElementById('playnow').href = gameData.freetogame_profile_url;
   
   // Update details with spans
   document.querySelector('#genre span').textContent = gameData.genre;
